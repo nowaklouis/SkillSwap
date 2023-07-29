@@ -1,0 +1,17 @@
+
+<nav class="navbar bg-secondary">
+  <div class="container-fluid">
+    <a class="nav-link" aria-current="page" href={{ path('home')}}>
+      <img src={{asset("images/logo.png")}} alt="logo" width="60" height="60">
+    </a>
+    {% if app.user %}
+      {#<li>
+        <a href={{path("mon_compte")}} class="btn btn-danger">Compte</a>
+      </li>#}
+        <a href={{path("app_logout")}} class="btn btn-danger">Deconnection</a>
+    {% else %}
+        <a href={{path("app_login")}} class="btn btn-danger">Se connecter</a>
+    {% endif %}
+   
+  </div>
+</nav>
