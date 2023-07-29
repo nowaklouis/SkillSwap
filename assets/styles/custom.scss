@@ -1,6 +1,17 @@
-$primary: black;
-$secondary: pink;
+$primary: #0f1b29;
+$secondary: #272727;
 $success: green;
-$danger: orange;
-$info: grey;
-$light: violet;
+$danger: red;
+$info: #d64609;
+$heading-color: white;
+
+body {
+  --bs-body-color: #fff;
+  --bs-body-bg: #fff;
+  --bs-body-bg: $secondary;
+  --bs-border-color: $secondary;
+}
+
+.width-card-compte {
+  width: 30rem;
+}

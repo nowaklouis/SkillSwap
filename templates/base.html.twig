@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}SkillSwap{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
@@ -12,7 +12,7 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body>
+    <body class="text-white bg-primary">
         {% block alert %}
             {% for category, messages in app.flashes %}
                 {% for message in messages %}

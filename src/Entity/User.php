@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'Cette email possede deja un compte chez nous.')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -40,7 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $created_at = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $dateOfBirth = null;
+    private ?\DateTimeInterface $date_of_birth = null;
 
     public function __construct()
     {
@@ -57,7 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
@@ -86,7 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $roles): static
     {
         $this->roles = $roles;
 
@@ -101,7 +101,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): static
     {
         $this->password = $password;
 
@@ -111,7 +111,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see UserInterface
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
@@ -122,7 +122,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(string $username): static
     {
         $this->username = $username;
 
@@ -134,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
@@ -146,7 +146,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(\DateTimeImmutable $created_at): static
     {
         $this->created_at = $created_at;
 
@@ -155,12 +155,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getDateOfBirth(): ?\DateTimeInterface
     {
-        return $this->dateOfBirth;
+        return $this->date_of_birth;
     }
 
-    public function setDateOfBirth(\DateTimeInterface $dateOfBirth): self
+    public function setDateOfBirth(\DateTimeInterface $date_of_birth): static
     {
-        $this->dateOfBirth = $dateOfBirth;
+        $this->date_of_birth = $date_of_birth;
 
         return $this;
     }
