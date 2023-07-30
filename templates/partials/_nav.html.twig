@@ -10,10 +10,10 @@
       <a href={{path("app_logout")}} class="btn btn-outline-info">Deconnexion</a>
     </div>
     {% else %}
-        {% if app.request.attributes.get('_route') == 'app_register' %}
-          <a href={{path("app_login")}} class="btn btn-info">Se connecter</a>
-        {% else %}
+        {% if app.request.attributes.get('_route') == 'app_login' %}
           <a href={{path("app_register")}} class="btn btn-info">S'inscrire</a>
+        {% else %}
+          <a href={{path("app_login")}} class="btn btn-info">Se connecter</a>
         {% endif %}
     {% endif %}
   </div>

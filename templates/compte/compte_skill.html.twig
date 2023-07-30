@@ -1,0 +1,43 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+  <div>
+        <div class="d-flex justify-content-center p-4">
+            <h1>Ajout de vos compétences</h1>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="card bg-secondary p-2" style="width: 18rem;">
+                {{ form_errors(form) }}
+
+                {{ form_start(form) }}
+                    {{ form_row(form.skillname) }}
+                    {{ form_row(form.level) }}
+                    {{ form_row(form.description) }}
+                    <div class="d-flex justify-content-center pt-3">
+                        <button type="submit" class="btn btn-info">Valider</button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="d-flex justify-content-center p-4">
+            <h1>Ajout de vos compétences</h1>
+        </div>
+        <div class="d-flex flex-wrap justify-content-center">
+            {% for skill in skills %}
+                <div class="card bg-secondary p-2 m-1" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{skill.skillname}}</h5>
+                        <h6 class="card-subtitle mb-2 text-center">Niveau: {{ skill.level}}</h6>
+                        <p class="card-text text-end">{{ skill.description}}</p>
+                        <div class="d-flex justify-content-end">
+                            <a href="{{ path('skill_delete', {'id': skill.id} )}}" class="btn btn-outline-info">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

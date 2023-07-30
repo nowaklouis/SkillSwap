@@ -4,11 +4,11 @@ $success: green;
 $danger: red;
 $info: #d64609;
 $heading-color: white;
+$accordion-bg: $secondary;
 
 body {
   --bs-body-color: #fff;
   --bs-body-bg: #fff;
-  --bs-body-bg: $secondary;
   --bs-border-color: $secondary;
 }
 

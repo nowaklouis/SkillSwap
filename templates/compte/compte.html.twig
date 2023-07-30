@@ -6,13 +6,10 @@
         <div class="card bg-secondary mt-3 mx-2 width-card-compte">
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Vos compétences</a>
+                    <a class="nav-link text-white" href="{{ path('compte_skill')}}">Vos compétences</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Vos apprentissages</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Votre description</a>
+                    <a class="nav-link text-white" href="{{ path('compte_interest')}}">Vos apprentissages</a>
                 </li>
             </ul>
         </div>
@@ -37,7 +34,7 @@
                 </fieldset>
             </form>
             <div class="d-flex justify-content-center">
-                <a href="" class="btn btn-info w-25">Editer</a>
+                <a href="{{ path('compte_edit', {'id': user.id }) }}" class="btn btn-info w-25">Editer</a>
             </div>
         </div>
     </div>
@@ -59,7 +56,7 @@
             <div class="accordion-item">
                 <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Vos session rejonts
+                    Vos session rejoints
                 </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
