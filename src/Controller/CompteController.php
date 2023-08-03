@@ -9,10 +9,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Entity\Skill;
 use App\Entity\Interest;
+use App\Entity\Avatar;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\EditCompteType;
 use App\Form\InterestFormType;
 use App\Form\SkillFormType;
+use App\Form\AvatarFormType;
 
 class CompteController extends AbstractController
 {
@@ -25,9 +27,11 @@ class CompteController extends AbstractController
     public function index(): Response
     {
         $user = $this->entity->getRepository(User::class)->find($this->getUser());
+        $avatar = $this->entity->getRepository(Avatar::class)->findByUser($this->getUser());
 
         return $this->render('compte/compte.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'avatar' => $avatar
         ]);
     }
 
@@ -153,5 +157,29 @@ class CompteController extends AbstractController
         $this->addFlash('success', 'Votre matiere intéressé a bien été supprimé !');
 
         return $this->redirectToRoute('compte_interest');
+    }
+
+    #[Route('/compte/avatar', name: 'compte_avatar')]
+    public function compteAvatar(Request $request): Response
+    {
+        $avatar = new Avatar();
+
+        $form = $this->createForm(AvatarFormType::class, $avatar);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $avatar->setUser($this->getUser());
+
+            $this->entity->persist($avatar);
+            $this->entity->flush();
+
+            $this->addFlash('success', 'Votre avatar a bien été modifié !');
+            return $this->redirectToRoute('compte');
+        }
+
+        return $this->render('compte/compte_avatar.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }

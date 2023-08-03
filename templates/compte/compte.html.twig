@@ -1,6 +1,16 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+    {% if avatar is defined %}
+        <div class="d-flex justify-content-center p-3">
+           <img style="width: 10rem; border-radius: 50%;" src="/uploads/{{ avatar[0].imageName }}" >
+        </div>
+    {% else %}
+        <div class="d-flex justify-content-center p-3">
+            <a href="{{ path('compte_avatar') }}" class="text-center btn btn-info">Votre avatar ici</a>
+        </div>
+    {% endif %}
+
     <h2 class="text-center pt-2">Vos informations</h2>
     <div class="d-flex justify-content-center">
         <div class="card bg-secondary mt-3 mx-2 width-card-compte">
