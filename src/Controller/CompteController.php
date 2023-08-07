@@ -10,11 +10,14 @@ use App\Entity\User;
 use App\Entity\Skill;
 use App\Entity\Interest;
 use App\Entity\Avatar;
+use App\Entity\Registered;
+use App\Entity\Swap;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\EditCompteType;
 use App\Form\InterestFormType;
 use App\Form\SkillFormType;
 use App\Form\AvatarFormType;
+use App\Form\SwapFormType;
 
 class CompteController extends AbstractController
 {
@@ -28,10 +31,14 @@ class CompteController extends AbstractController
     {
         $user = $this->entity->getRepository(User::class)->find($this->getUser());
         $avatar = $this->entity->getRepository(Avatar::class)->findByUser($this->getUser());
+        $swaps = $this->entity->getRepository(Swap::class)->findByAuthor($this->getUser());
+        $swapsJoineds = $this->entity->getRepository(Registered::class)->findByUsers($this->getUser()); // recuperation des swap par apport a l'utilisateur ?
 
         return $this->render('compte/compte.html.twig', [
             'user' => $user,
-            'avatar' => $avatar
+            'avatar' => $avatar,
+            'swaps' => $swaps,
+            'swapsJoineds' => $swapsJoineds,
         ]);
     }
 
@@ -69,7 +76,7 @@ class CompteController extends AbstractController
         ]);
     }
 
-    #[Route('/compte/skill', name: 'compte_skill')]
+    #[Route('/compte-skill', name: 'compte_skill')]
     public function compteSkill(Request $request): Response
     {
         $skill = new Skill();
@@ -114,7 +121,7 @@ class CompteController extends AbstractController
         return $this->redirectToRoute('compte_skill');
     }
 
-    #[Route('/compte/interest', name: 'compte_interest')]
+    #[Route('/compte-interest', name: 'compte_interest')]
     public function compteInterest(Request $request): Response
     {
         $interest = new Interest();
@@ -159,7 +166,7 @@ class CompteController extends AbstractController
         return $this->redirectToRoute('compte_interest');
     }
 
-    #[Route('/compte/avatar', name: 'compte_avatar')]
+    #[Route('/compte-avatar', name: 'compte_avatar')]
     public function compteAvatar(Request $request): Response
     {
         $avatar = new Avatar();
@@ -180,6 +187,30 @@ class CompteController extends AbstractController
 
         return $this->render('compte/compte_avatar.html.twig', [
             'form' => $form->createView()
+        ]);
+    }
+
+    #[Route('/compte-swap', name: 'compte_swap')]
+    public function compteSwap(Request $request): Response
+    {
+        $swap = new Swap();
+
+        $formSwap = $this->createForm(SwapFormType::class, $swap);
+        $formSwap->handleRequest($request);
+
+        if ($formSwap->isSubmitted() && $formSwap->isValid()) {
+            $swap->setAuthor($this->getUser());
+
+            $this->entity->persist($swap);
+            $this->entity->flush();
+
+            $this->addFlash('success', 'Votre Swap a bien été ajouté !');
+
+            return $this->redirectToRoute('compte');
+        }
+
+        return $this->render('compte/compte_swap.html.twig', [
+            'form' => $formSwap->createView(),
         ]);
     }
 }

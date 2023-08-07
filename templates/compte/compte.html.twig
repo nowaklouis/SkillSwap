@@ -54,27 +54,48 @@
             <div class="accordion-item">
                 <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseTwo">
-                    Vos session crées
+                    Vos swap crées
                 </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        liste des sessions
-                    </div>
+                    {% if swaps is not empty %}
+                        {% for swap in swaps %}
+                            <div class="accordion-body">
+                                <a href="#">{{swap.subject}} {{swap.date}} {{swap.duration}}</a>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="accordion-body">
+                            Apprendre aux autres ce que vous savez faire, créer un swap !
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="accordion-item">
                 <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    Vos session rejoints
+                    Vos swap rejoints
                 </button>
                 </h2>
                 <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        liste des sessions
-                    </div>
+                    {% if swapsJoineds is not empty %}
+                        {% for swapJoined in swapsJoineds %}
+                            <div class="accordion-body">
+                                <a href="#">{{swapJoined.subject}} {{swapJoined.date|date("m/d/Y", "H:i")}} {{swapJoined.duration}}</a>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="accordion-body">
+                            Rejoignez donc des swap !
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="d-flex justify-content-center pb-4">
+        <a href="{{ path('compte_swap') }}" class="btn btn-info">Créer un Swap</a>
+    </div>
+
 {% endblock %}

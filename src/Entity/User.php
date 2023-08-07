@@ -53,11 +53,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Avatar $avatar = null;
 
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Swap::class)]
+    private Collection $swaps;
+
     public function __construct()
     {
         $this->created_at = new \DateTimeImmutable();
         $this->skills = new ArrayCollection();
         $this->interests = new ArrayCollection();
+        $this->swaps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -256,6 +260,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Swap>
+     */
+    public function getSwaps(): Collection
+    {
+        return $this->swaps;
+    }
+
+    public function addSwap(Swap $swap): static
+    {
+        if (!$this->swaps->contains($swap)) {
+            $this->swaps->add($swap);
+            $swap->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSwap(Swap $swap): static
+    {
+        if ($this->swaps->removeElement($swap)) {
+            // set the owning side to null (unless already changed)
+            if ($swap->getAuthor() === $this) {
+                $swap->setAuthor(null);
+            }
+        }
 
         return $this;
     }

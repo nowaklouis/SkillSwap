@@ -1,11 +1,17 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div class="bg-primary">
-        <h1>SkillSwap</h1>
-        <div>
-            <h3>HOME HOME HOME</h3>
+    <div>
+        <h1 class="text-center">SkillSwap</h1>
+        <div class="d-flex justify-content-center pt-2">
+            <div class="card bg-secondary p-2" style="width: 18rem;">
+                <form class="my-2 my-lg-0">
+                    <div class="d-flex">
+                        <input class="form-control mr-sm-2 text-black" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        
     </div>
 {% endblock %}
