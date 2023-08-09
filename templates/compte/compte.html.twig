@@ -61,7 +61,7 @@
                     {% if swaps is not empty %}
                         {% for swap in swaps %}
                             <div class="accordion-body">
-                                <a href="#">{{swap.subject}} {{swap.date}} {{swap.duration}}</a>
+                                <a href="{{ path('swap', {'id': swap.id }) }}" class="text-white text-decoration-none">Swap : {{swap.subject}} -- Prévue le : {{swap.date|date("m/d/Y H:i") }} -- durée : {{swap.duration|date("H:i")}}</a>
                             </div>
                         {% endfor %}
                     {% else %}
@@ -71,6 +71,7 @@
                     {% endif %}
                 </div>
             </div>
+            
             <div class="accordion-item">
                 <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -81,7 +82,7 @@
                     {% if swapsJoineds is not empty %}
                         {% for swapJoined in swapsJoineds %}
                             <div class="accordion-body">
-                                <a href="#">{{swapJoined.subject}} {{swapJoined.date|date("m/d/Y", "H:i")}} {{swapJoined.duration}}</a>
+                                <a href="{{ path('swap', {'id': swapJoined.id }) }}" class="text-white text-decoration-none">Swap : {{swapJoined.subject}} -- Prévue le : {{swapJoined.date|date("m/d/Y H:i") }} -- durée : {{swapJoined.duration|date("H:i")}}</a>
                             </div>
                         {% endfor %}
                     {% else %}

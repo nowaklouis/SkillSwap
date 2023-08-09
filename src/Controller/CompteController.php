@@ -32,7 +32,7 @@ class CompteController extends AbstractController
         $user = $this->entity->getRepository(User::class)->find($this->getUser());
         $avatar = $this->entity->getRepository(Avatar::class)->findByUser($this->getUser());
         $swaps = $this->entity->getRepository(Swap::class)->findByAuthor($this->getUser());
-        $swapsJoineds = $this->entity->getRepository(Registered::class)->findByUsers($this->getUser()); // recuperation des swap par apport a l'utilisateur ?
+        $swapsJoineds = $this->entity->getRepository(Registered::class)->findByUsers($this->getUser());
 
         return $this->render('compte/compte.html.twig', [
             'user' => $user,
