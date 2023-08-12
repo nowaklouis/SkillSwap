@@ -8,7 +8,7 @@
             <p>{{ swap.description }}</p>
             <h4>Créer par :</h4>
             <div class="d-flex justify-content-center py-2">
-                <a href="#">
+                <a href="{{ path('other_compte', { 'id': swap.author.id }) }}">
                     <div class="card bg-primary p-2">
                     {% if avatarAuthor is defined %}
                         <div class="d-flex justify-content-center p-3">
@@ -22,10 +22,16 @@
             <h5>Prévue pour le :</h5>
             <h5 class="text-center">{{swap.date|date("m/d/Y H:i") }}</h5>
             <h5>Durée : {{swap.duration|date("H:i")}}
-            <h5>Nombre d'inscrit : 9</h5>{# register|count creer une varibale qui recuper les inscrit #}
+            <h5>Nombre d'inscrit : {{ register|length}}</h5>
             <div class="d-flex justify-content-evenly">
-                <a href="#" class="btn btn-outline-info">Discussion</a>{# <-- bloquer si non participé #}
-               {#} <a href="{{ path('swap_register', { 'id': swap.id }) }}" class="btn btn-info">Participer</a>{# <-- creer une route/methode qui va receptionner une route et modifier dans les register d'une activité #}
+                {% if register is empty %}
+                    <a href="#" class="btn btn-outline-info disabled">Discussion</a>
+                    <a href="{{ path('swap_register', { 'id': swap.id }) }}" class="btn btn-info">Participer</a>
+                {% else %}
+                    <a href="#" class="btn btn-outline-info">Discussion</a>
+                    <a href="{{ path('swap_deregister', { 'id': swap.id }) }}" class="btn btn-info">Desinscrire</a>
+                {% endif %}
+                {# pour le input, voir pour la suite, mettre en debloacge en meem temps que participer #}
             </div>
             <div class="py-3 d-flex justify-content-center">
                 <input type="text" label="Lien du meet" placeholder="XXXX-XXXX-XXXX-XXXX">

@@ -213,4 +213,18 @@ class CompteController extends AbstractController
             'form' => $formSwap->createView(),
         ]);
     }
+
+    #[Route('/user/{id}', name: 'other_compte')]
+    public function otherCompte(int $id): Response
+    {
+        $user = $this->entity->getRepository(User::class)->find($id);
+        $avatar = $this->entity->getRepository(Avatar::class)->findByUser($id);
+        $skills = $this->entity->getRepository(Skill::class)->findByUser($id);
+
+        return $this->render('compte/compte_other.html.twig', [
+            'user' => $user,
+            'avatar' => $avatar,
+            'skills' => $skills
+        ]);
+    }
 }

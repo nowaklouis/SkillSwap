@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    {% if avatar is defined %}
+        <div class="d-flex justify-content-center p-3">
+           <img style="width: 10rem; border-radius: 50%;" src="/uploads/{{ avatar[0].imageName }}" >
+        </div>
+    {% else %}
+        <div class="d-flex justify-content-center p-3">
+            <a href="{{ path('compte_avatar') }}" class="text-center btn btn-info">Votre avatar ici</a>
+        </div>
+    {% endif %}
+     <div class="d-flex justify-content-center pt-4">
+        <div class="card bg-secondary p-2" style="width: 18rem;">
+            <h2 class="text-center pt-2">{{ user.username }}</h2>
+            <p class="text-center pt-2">{{ user.description }}</p>
+            <h4 class="text-center pt-2">Mes competences</h4>
+            {% if skills is defined %}
+                <ul>
+                    {% for skill in skills %}
+                        <li>{{ skill.skillname}} Nv. {{ skill.level }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <h4>Evaluation :</h4>
+            <p>**************</p>
+        </div>
+    </div>
+{% endblock %}

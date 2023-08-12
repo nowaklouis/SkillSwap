@@ -23,31 +23,48 @@ class SwapController extends AbstractController
     #[Route('/swap/{id}', name: 'swap')]
     public function getSwap(int $id): Response
     {
-        /*$user = $this->entity->getRepository(User::class)->find($this->getUser());
-       
-        $swapsJoineds = $this->entity->getRepository(Registered::class)->findByUsers($this->getUser());*/
-
         $swap = $this->entity->getRepository(Swap::class)->find($id);
         $userAuthor = $this->entity->getRepository(User::class)->find($swap->getAuthor());
         $avatarAuthor = $this->entity->getRepository(Avatar::class)->findByUser($swap->getAuthor());
+        $register = $this->entity->getRepository(Registered::class)->findByUsers($this->getUser());
 
         return $this->render('swap/swap.html.twig', [
             'swap' => $swap,
             'author' => $userAuthor,
             'avatarAuthor' => $avatarAuthor,
+            'register' => $register
         ]);
     }
 
-    /*#[Route('/swap-register/{id}', name: 'swap_register')]
+    #[Route('/swap-register/{id}', name: 'swap_register')]
     public function setRegister(int $id): Response
     {
+        $register = new Registered();
         $swap = $this->entity->getRepository(Swap::class)->find($id);
-        $swap->addRegister($this->getUser());
+        $register
+            ->setUsers($this->getUser())
+            ->setSwaps($swap);
 
+        $this->entity->persist($register);
         $this->entity->flush();
 
-        return $this->redirectToRoute('swap');
-    }*/
+        return $this->redirectToRoute('swap', [
+            'id' => $id
+        ]);
+    }
+
+    #[Route('/swap-deregister/{id}', name: 'swap_deregister')]
+    public function setDeregister(int $id): Response
+    {
+        $register = $this->entity->getRepository(Registered::class)->findOneByUserAndSwap($this->getUser(), $id);
+
+        $this->entity->remove($register);
+        $this->entity->flush();
+
+        return $this->redirectToRoute('swap', [
+            'id' => $id
+        ]);
+    }
 
     #[Route('/swap-edit/{id}', name: 'swap_edit')]
     public function compteEdit(int $id, Request $request): Response
