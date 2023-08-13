@@ -6,9 +6,15 @@
         <div class="d-flex justify-content-center pt-2">
             <div class="card bg-secondary p-2" style="width: 18rem;">
                 <form class="my-2 my-lg-0">
-                    <div class="d-flex">
-                        <input class="form-control mr-sm-2 text-black" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-info my-2 my-sm-0" type="submit">Search</button>
+                    <div class="d-flex">{#}
+                        {{ form_errors(searchForm) }}
+
+                        {{ form_start(searchForm) }}
+                        {{ form_widget(searchForm.searchInput) }}
+                            <div class="d-flex justify-content-center pt-3">
+                                <button type="submit" class="btn btn-info">Rechercher</button>
+                            </div>
+                        {{ form_end(searchForm) }}#}
                     </div>
                 </form>
             </div>

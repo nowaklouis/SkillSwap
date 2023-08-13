@@ -38,10 +38,14 @@ class Swap
     #[ORM\OneToMany(mappedBy: 'swaps', targetEntity: Registered::class)]
     private Collection $register;
 
+    #[ORM\OneToMany(mappedBy: 'swap', targetEntity: Messages::class, orphanRemoval: true)]
+    private Collection $message;
+
     public function __construct()
     {
         $this->register = new ArrayCollection();
         $this->created_at = new \DateTimeImmutable();
+        $this->message = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,6 +149,36 @@ class Swap
             // set the owning side to null (unless already changed)
             if ($register->getSwaps() === $this) {
                 $register->setSwaps(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Messages>
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(Messages $message): static
+    {
+        if (!$this->message->contains($message)) {
+            $this->message->add($message);
+            $message->setSwap($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Messages $message): static
+    {
+        if ($this->message->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getSwap() === $this) {
+                $message->setSwap(null);
             }
         }
 

@@ -4,14 +4,16 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Entity\Avatar;
 use App\Entity\Registered;
 use App\Entity\Swap;
+use App\Entity\Messages;
+use App\Form\MessagesType;
 use App\Form\SwapFormType;
-use Symfony\Component\HttpFoundation\Request;
 
 class SwapController extends AbstractController
 {
@@ -21,18 +23,47 @@ class SwapController extends AbstractController
     }
 
     #[Route('/swap/{id}', name: 'swap')]
-    public function getSwap(int $id): Response
+    public function getSwap(int $id, Request $request): Response
     {
         $swap = $this->entity->getRepository(Swap::class)->find($id);
         $userAuthor = $this->entity->getRepository(User::class)->find($swap->getAuthor());
         $avatarAuthor = $this->entity->getRepository(Avatar::class)->findByUser($swap->getAuthor());
         $register = $this->entity->getRepository(Registered::class)->findByUsers($this->getUser());
+        $allMessages = $this->entity->getRepository(Messages::class)->findBySwap($id);
+
+        $message = new Messages();
+        $messageForm = $this->createForm(MessagesType::class, $message);
+
+        $messageForm->handleRequest($request);
+
+        if ($messageForm->isSubmitted() && $messageForm->isValid()) {
+
+            $mainMessageId = $messageForm->get("main_messageId")->getData();
+            if ($mainMessageId != null) {
+                $mainMessage = $this->entity->getRepository(Messages::class)->find($mainMessageId);
+            }
+
+            $message
+                ->setUser($this->getUser())
+                ->setSwap($swap)
+                ->setMainMessage($mainMessage ?? null);
+
+            $this->entity->persist($message);
+            $this->entity->flush();
+
+            $this->addFlash('success', 'Votre message a bien été envoyé !');
+            return $this->redirectToRoute('swap', [
+                'id' => $id
+            ]);
+        }
 
         return $this->render('swap/swap.html.twig', [
             'swap' => $swap,
             'author' => $userAuthor,
             'avatarAuthor' => $avatarAuthor,
-            'register' => $register
+            'register' => $register,
+            'messageForm' => $messageForm->createView(),
+            'allMessages' => $allMessages
         ]);
     }
 

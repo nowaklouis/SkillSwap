@@ -25,13 +25,10 @@
             <h5>Nombre d'inscrit : {{ register|length}}</h5>
             <div class="d-flex justify-content-evenly">
                 {% if register is empty %}
-                    <a href="#" class="btn btn-outline-info disabled">Discussion</a>
                     <a href="{{ path('swap_register', { 'id': swap.id }) }}" class="btn btn-info">Participer</a>
                 {% else %}
-                    <a href="#" class="btn btn-outline-info">Discussion</a>
                     <a href="{{ path('swap_deregister', { 'id': swap.id }) }}" class="btn btn-info">Desinscrire</a>
                 {% endif %}
-                {# pour le input, voir pour la suite, mettre en debloacge en meem temps que participer #}
             </div>
             <div class="py-3 d-flex justify-content-center">
                 <input type="text" label="Lien du meet" placeholder="XXXX-XXXX-XXXX-XXXX">
@@ -39,11 +36,55 @@
             
         </div>
     </div>
+
     <div class="d-flex justify-content-center pt-2">
         {% if app.user == author %}
             <a href="{{ path('swap_edit', {'id': swap.id }) }}" class="btn btn-info m-1">Editer votre swap</a>
             <a href="{{ path('swap_delete', {'id': swap.id }) }}" class="btn btn-info m-1">Supprimer ce swap</a>
         {% endif %}
+    </div>
+
+    <div class="d-flex justify-content-center pt-4">
+        <div class="card bg-secondary p-2" style="width: 18rem;">
+            <div>
+                {% if allMessages is empty %}
+                    <h4>Laisser le premier message !</h4>
+                {% else %}
+                    <h4>Liste des messages du Swap</h4>
+                    {% for message in allMessages %}
+                        {% if message.mainMessage is null %}
+                            <div class="d-flex justify-content-center pt-4">
+                                <div class="card bg-secondary p-2" style="width: 17rem;">
+                                    <p class="bold">Envoyé par {{ message.user.username}} le {{ message.createdAt|date("d/m/Y H:i")}}</p>
+                                    <p>{{ message.message}}</p>
+                                    <a href="#ajout-message" data-reply data-id="{{ message.id }}" class="btn btn-outline-info">Répondre</a>
+                               
+
+                            {% for reponse in message.answer %}
+                                <p class="bold">Reponse par {{ reponse.user.username}} le {{ reponse.createdAt|date("d/m/Y H:i")}}</p>
+                                    <p>{{ reponse.message}}</p>
+                            {% endfor %}
+
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+           </div>
+           <div class="d-flex justify-content-center pt-4">
+                <div class="card bg-primary p-2" style="width: 17rem;" id="ajout-message">
+                    <h4>Laisser un message !</h4>
+                    {{ form_errors(messageForm) }}
+
+                    {{ form_start(messageForm) }}
+                    {{ form_row(messageForm.message) }}
+                        <div class="d-flex justify-content-center pt-3">
+                            <button type="submit" class="btn btn-info">Envoyé</button>
+                        </div>
+                    {{ form_end(messageForm) }}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 
