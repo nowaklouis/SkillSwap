@@ -1,8 +1,8 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    {% if avatar is defined %}
-        <div class="d-flex justify-content-center p-3">
+    {% if avatar is defined and avatar is not empty %}
+       <div class="d-flex justify-content-center p-3">
            <img style="width: 10rem; border-radius: 50%;" src="/uploads/{{ avatar[0].imageName }}" >
         </div>
     {% else %}
@@ -82,7 +82,7 @@
                     {% if swapsJoineds is not empty %}
                         {% for swapJoined in swapsJoineds %}
                             <div class="accordion-body">
-                                <a href="{{ path('swap', {'id': swapJoined.id }) }}" class="text-white text-decoration-none">Swap : {{swapJoined.subject}} -- Prévue le : {{swapJoined.date|date("m/d/Y H:i") }} -- durée : {{swapJoined.duration|date("H:i")}}</a>
+                                <a href="{{ path('swap', {'id': swapJoined.id }) }}" class="text-white text-decoration-none">Swap : {{swapJoined.swaps.subject}} -- Prévue le : {{swapJoined.swaps.date|date("m/d/Y H:i") }} -- durée : {{swapJoined.swaps.duration|date("H:i")}}</a>
                             </div>
                         {% endfor %}
                     {% else %}

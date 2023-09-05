@@ -18,6 +18,8 @@ use App\Form\InterestFormType;
 use App\Form\SkillFormType;
 use App\Form\AvatarFormType;
 use App\Form\SwapFormType;
+// mettre un champs category en plus dans les swap avec une liste prefaite vant d'une base de donnée, modifier le form de la creation de sdwap avec un select
+//affficher ensuite toutes les ctageories dans lea page home et faire un filtrer sur chaque ctageoriy de swap
 
 class CompteController extends AbstractController
 {
